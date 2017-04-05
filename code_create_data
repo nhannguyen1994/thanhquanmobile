@@ -1,0 +1,267 @@
+DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS field;
+DROP TABLE IF EXISTS field_section;
+DROP TABLE IF EXISTS product_template;
+
+CREATE TABLE product_template (
+	product_template_id text PRIMARY KEY,
+    name text NOT NULL
+);
+
+INSERT INTO product_template (product_template_id, name)
+VALUES 	('M01', 'Smart phone'),
+		('M02', 'Tivi'),
+		('M03', 'Tủ lạnh'),
+		('M04', 'Máy giặt'),
+		('M05', 'Nồi cơm điện'),
+		('M06', 'Điều hòa')
+;
+
+TABLE product_template;
+
+CREATE TABLE product (
+	product_id text PRIMARY KEY,
+    product_name text NOT NULL,
+    manufacturer_id text,
+    price integer,
+    quantity smallint,
+    properties text,
+    description text,
+    madein text,
+    promotion text,
+    status text,
+    product_template_id text,
+    FOREIGN KEY (product_template_id)
+    	REFERENCES product_template (product_template_id) MATCH FULL
+);
+
+CREATE TABLE field_section (
+	field_section_id text PRIMARY KEY,
+    name text NOT NULL,
+    product_template_id text NOT NULL,
+    FOREIGN KEY (product_template_id)
+    	REFERENCES product_template (product_template_id) MATCH FULL
+);
+
+INSERT INTO field_section (field_section_id, name, product_template_id)
+VALUES 	('FS01', 'Màn hình', 'M01'),
+		('FS02', 'Camera sau', 'M01'),
+		('FS03', 'Camera trước', 'M01'),
+		('FS04', 'Hệ điều hành - CPU', 'M01'),
+		('FS05', 'Bộ nhớ & Lưu trữ', 'M01'),
+		('FS06', 'Kết nối', 'M01'),
+		('FS07', 'Thiết kế & Trọng lượng', 'M01'),
+		('FS08', 'Thông tin pin & Sạc', 'M01'),
+		('FS09', 'Tiện ích', 'M01'),
+
+		('FS10', 'Tổng quan', 'M02'),
+		('FS11', 'Kết nối', 'M02'),
+		('FS12', 'Thông tin Smart Tivi/ Internet Tivi', 'M02'),
+		('FS13', 'Công nghệ hình ảnh, âm thanh', 'M02'),
+		('FS14', 'Thông tin chung', 'M02'),
+
+		('FS15', 'Đặc điểm sản phẩm', 'M03'),
+
+		('FS16', 'Thông tin chung', 'M04'),
+		('FS17', 'Công nghệ giặt', 'M04'),
+		('FS18', 'Tổng quan', 'M04'),
+
+		('FS19', 'Đặc điểm sản phẩm', 'M05'),
+
+        ('FS20', 'Tổng quan', 'M06'),
+        ('FS21', 'Tính năng', 'M06'),
+        ('FS22', 'Thông tin chung', 'M06')
+;
+
+TABLE field_section;
+
+CREATE TABLE field (
+	field_id text PRIMARY KEY,
+    name text NOT NULL,
+    type text NOT NULL,
+    description text,
+    validation text,
+    required boolean,
+    field_section_id text,
+    FOREIGN KEY (field_section_id)
+    	REFERENCES field_section (field_section_id) MATCH FULL
+);
+
+INSERT INTO field (field_id, name, type, description, validation, required, field_section_id)
+VALUES 	('Fi01', 'Công nghệ màn hình', 'text', '', '', '1', 'FS01'),
+		('Fi02', 'Độ phân giải', 'text', '', '', '1', 'FS01'),
+		('Fi03', 'Màn hình rộng', 'text', '', '', '1', 'FS01'),
+		('Fi04', 'Mặt kính cảm ứng', 'text', '', '', '1', 'FS01'),
+
+		('Fi05', 'Độ phân giải', 'text', '', '', '0', 'FS02'),
+		('Fi06', 'Quay phim', 'text', '', '', '1', 'FS02'),
+		('Fi07', 'Đèn Flash', 'text', '', '', '0', 'FS02'),
+		('Fi08', 'Chụp ảnh nâng cao', 'text', '', '', '1', 'FS02'),
+
+		('Fi09', 'Độ phân giải', 'text', '', '', '1', 'FS03'),
+		('Fi10', 'Videocall', 'text', '', '', '1', 'FS03'),
+		('Fi11', 'Thông tin khác', 'text', '', '', '0', 'FS03'),
+
+		('Fi12', 'Hệ điều hành', 'text', '', '', '0', 'FS04'),
+		('Fi13', 'Chipset (hãng SX CPU)', 'text', '', '', '0', 'FS04'),
+		('Fi14', 'Tốc độ CPU', 'text', '', '', '0', 'FS04'),
+		('Fi15', 'Chip đồ họa (GPU)', 'text', '', '', '0', 'FS04'),
+
+		('Fi16', 'RAM', 'text', '', '', '0', 'FS05'),
+		('Fi17', 'Bộ nhớ trong', 'text', '', '', '0', 'FS05'),
+		('Fi18', 'Bộ nhớ còn lại (khả dụng)', 'text', '', '', '0', 'FS05'),
+		('Fi19', 'Thẻ nhớ ngoài', 'text', '', '', '0', 'FS05'),
+
+		('Fi20', 'Mạng di động', 'text', '', '', '0', 'FS06'),
+		('Fi22', 'SIM', 'text', '', '', '0', 'FS06'),
+		('Fi23', 'Wifi', 'text', '', '', '0', 'FS06'),
+		('Fi24', 'GPS', 'text', '', '', '0', 'FS06'),
+		('Fi25', 'Bluetooth', 'text', '', '', '0', 'FS06'),
+		('Fi26', 'Cổng kết nối/sạc', 'text', '', '', '0', 'FS06'),
+		('Fi27', 'Jack tai nghe', 'text', '', '', '0', 'FS06'),
+		('Fi28', 'Kết nối khác', 'text', '', '', '0', 'FS06'),
+
+		('Fi29', 'Thiết kế', 'text', '', '', '0', 'FS07'),
+		('Fi31', 'Chất liệu', 'text', '', '', '0', 'FS07'),
+		('Fi32', 'Kích thước', 'text', '', '', '0', 'FS07'),
+		('Fi33', 'Trọng lượng', 'text', '', '', '0', 'FS07'),
+
+		('Fi34', 'Loại pin', 'text', '', '', '0', 'FS08'),
+		('Fi35', 'Dung lượng pin', 'text', '', '', '0', 'FS08'),
+		('Fi36', 'Công nghệ pin', 'text', '', '', '0', 'FS08'),
+
+		('Fi37', 'Bảo mật nâng cao', 'text', '', '', '0', 'FS09'),
+		('Fi38', 'Tính năng đặc biệt', 'text', '', '', '0', 'FS09'),
+		('Fi39', 'Ghi âm', 'text', '', '', '0', 'FS09'),
+		('Fi40', 'Radio', 'text', '', '', '0', 'FS09'),
+		('Fi41', 'Xem phim', 'text', '', '', '0', 'FS09'),
+		('Fi42', 'Nghe nhạc', 'text', '', '', '0', 'FS09'),
+
+        /* Tivi */
+		('Fi43', 'Loại Tivi', 'text', '', '', '0', 'FS10'),
+		('Fi44', 'Kích cỡ màn hình', 'text', '', '', '0', 'FS10'),
+		('Fi45', 'Độ phân giải', 'text', '', '', '0', 'FS10'),
+		('Fi46', 'Chỉ số hình ảnh', 'text', '', '', '0', 'FS10'),
+		('Fi47', 'Chỉ số chuyển động rõ nét', 'text', '', '', '0', 'FS10'),
+
+		('Fi48', 'Kết nối Internet', 'text', '', '', '0', 'FS11'),
+		('Fi49', 'Cổng HDMI', 'text', '', '', '0', 'FS11'),
+		('Fi50', 'Cổng AV', 'text', '', '', '0', 'FS11'),
+		('Fi51', 'Cổng VGA', 'text', '', '', '0', 'FS11'),
+		('Fi52', 'Cổng xuất âm thanh', 'text', '', '', '0', 'FS11'),
+		('Fi53', 'USB', 'text', '', '', '0', 'FS11'),
+		('Fi54', 'Định dạng video TV đọc được', 'text', '', '', '0', 'FS11'),
+		('Fi55', 'Định dạng phụ đề TV đọc được', 'text', '', '', '0', 'FS11'),
+		('Fi56', 'Định dạng hình ảnh TV đọc được', 'text', '', '', '0', 'FS11'),
+		('Fi57', 'Định dạng âm thanh TV đọc được', 'text', '', '', '0', 'FS11'),
+		('Fi58', 'Tích hợp đầu thu kỹ thuật số', 'text', '', '', '0', 'FS11'),
+
+		('Fi59', 'Hệ điều hành, giao diện', 'text', '', '', '0', 'FS12'),
+		('Fi60', 'Các ứng dụng sẵn có', 'text', '', '', '0', 'FS12'),
+		('Fi61', 'Các ứng dụng phổ biến có thể tải thêm', 'text', '', '', '0', 'FS12'),
+		('Fi62', 'Remote thông minh', 'text', '', '', '0', 'FS12'),
+		('Fi63', 'Điều khiển tivi bằng điện thoại', 'text', '', '', '0', 'FS12'),
+		('Fi64', 'Kết nối không dây với điện thoại, máy tính bảng', 'text', '', '', '0', 'FS12'),
+		('Fi65', 'Kết nối Bàn phím, chuột', 'text', '', '', '0', 'FS12'),
+		('Fi66', 'Tương tác thông minh', 'text', '', '', '0', 'FS12'),
+
+		('Fi67', 'Công nghệ xử lý hình ảnh', 'text', '', '', '0', 'FS13'),
+		('Fi68', 'Tivi 3D', 'text', '', '', '0', 'FS13'),
+		('Fi69', 'Công nghệ âm thanh', 'text', '', '', '0', 'FS13'),
+		('Fi70', 'Tổng công suất loa', 'text', '', '', '0', 'FS13'),
+
+		('Fi71', 'Công suất', 'text', '', '', '0', 'FS14'),
+		('Fi72', 'Kích thước có chân, đặt bàn', 'text', '', '', '0', 'FS14'),
+		('Fi73', 'Khối lượng có chân', 'text', '', '', '0', 'FS14'),
+		('Fi74', 'Kích thước không chân, treo tường', 'text', '', '', '0', 'FS14'),
+		('Fi75', 'Khối lượng không chân', 'text', '', '', '0', 'FS14'),
+		('Fi76', 'Nơi sản xuất', 'text', '', '', '0', 'FS14'),
+		('Fi77', 'Năm sản xuất', 'text', '', '', '0', 'FS14'),
+
+        /* Tu lanh */
+		('Fi78', 'Dung tích tổng', 'text', '', '', '0', 'FS15'),
+		('Fi79', 'Dung tích sử dụng', 'text', '', '', '0', 'FS15'),
+		('Fi80', 'Số người sử dụng', 'text', '', '', '0', 'FS15'),
+		('Fi81', 'Dung tích ngăn đá', 'text', '', '', '0', 'FS15'),
+		('Fi82', 'Dung tích ngăn lạnh', 'text', '', '', '0', 'FS15'),
+		('Fi83', 'Công nghệ Inverter', 'text', '', '', '0', 'FS15'),
+		('Fi84', 'Điện năng tiêu thụ', 'text', '', '', '0', 'FS15'),
+		('Fi85', 'Chế độ tiết kiệm điện khác', 'text', '', '', '0', 'FS15'),
+		('Fi86', 'Công nghệ làm lạnh', 'text', '', '', '0', 'FS15'),
+		('Fi87', 'Công nghệ kháng khuẩn, khử mùi', 'text', '', '', '0', 'FS15'),
+		('Fi88', 'Công nghệ bảo quản thực phẩm', 'text', '', '', '0', 'FS15'),
+		('Fi89', 'Tiện ích', 'text', '', '', '0', 'FS15'),
+		('Fi90', 'Kiểu tủ', 'text', '', '', '0', 'FS15'),
+		('Fi91', 'Số cửa', 'text', '', '', '0', 'FS15'),
+		('Fi92', 'Chất liệu cửa tủ lạnh', 'text', '', '', '0', 'FS15'),
+		('Fi93', 'Chất liệu khay ngăn', 'text', '', '', '0', 'FS15'),
+		('Fi94', 'Đèn chiếu sáng', 'text', '', '', '0', 'FS15'),
+		('Fi95', 'Kích thước - Khối lượng', 'text', '', '', '0', 'FS15'),
+		('Fi96', 'Nơi sản xuất', 'text', '', '', '0', 'FS15'),
+		('Fi97', 'Năm sản xuất', 'text', '', '', '0', 'FS15'),
+
+        /* May giat */
+		('Fi98', 'Loại máy giặt', 'text', '', '', '0', 'FS16'),
+		('Fi99', 'Lồng giặt', 'text', '', '', '0', 'FS16'),
+		('Fi100', 'Khối lượng giặt', 'text', '', '', '0', 'FS16'),
+		('Fi101', 'Tốc độ quay vắt', 'text', '', '', '0', 'FS16'),
+		('Fi102', 'Lượng nước tiêu thụ chuẩn', 'text', '', '', '0', 'FS16'),
+		('Fi103', 'Hiệu suất sử dụng điện', 'text', '', '', '0', 'FS16'),
+		('Fi104', 'Kiểu động cơ', 'text', '', '', '0', 'FS16'),
+		('Fi105', 'Inverter', 'text', '', '', '0', 'FS16'),
+
+		('Fi106', 'Chương trình hoạt động', 'text', '', '', '0', 'FS17'),
+		('Fi107', 'Công nghệ giặt', 'text', '', '', '0', 'FS17'),
+		('Fi108', 'Tiện ích', 'text', '', '', '0', 'FS17'),
+
+		('Fi109', 'Chất liệu lồng giặt', 'text', '', '', '0', 'FS18'),
+		('Fi110', 'Chất liệu vỏ máy', 'text', '', '', '0', 'FS18'),
+		('Fi111', 'Chất liệu nắp máy', 'text', '', '', '0', 'FS18'),
+		('Fi112', 'Bảng điều khiển', 'text', '', '', '0', 'FS18'),
+		('Fi113', 'Số người sử dụng', 'text', '', '', '0', 'FS18'),
+		('Fi114', 'Kích thước - Khối lượng', 'text', '', '', '0', 'FS18'),
+		('Fi115', 'Nơi sản xuất', 'text', '', '', '0', 'FS18'),
+		('Fi116', 'Năm sản xuất', 'text', '', '', '0', 'FS18'),
+
+        /*Noi com dien */
+		('Fi117', 'Loại nồi', 'text', '', '', '0', 'FS19'),
+		('Fi118', 'Dung tích nồi', 'text', '', '', '0', 'FS19'),
+		('Fi119', 'Số người ăn', 'text', '', '', '0', 'FS19'),
+		('Fi120', 'Chất liệu lòng nồi', 'text', '', '', '0', 'FS19'),
+		('Fi121', 'Số mâm nhiệt', 'text', '', '', '0', 'FS19'),
+		('Fi122', 'Chức năng nấu', 'text', '', '', '0', 'FS19'),
+		('Fi123', 'Tiện ích', 'text', '', '', '0', 'FS19'),
+		('Fi124', 'Công nghệ nấu', 'text', '', '', '0', 'FS19'),
+		('Fi125', 'Điều khiển', 'text', '', '', '0', 'FS19'),
+		('Fi126', 'Dây điện', 'text', '', '', '0', 'FS19'),
+		('Fi127', 'Công suất', 'text', '', '', '0', 'FS19'),
+		('Fi128', 'Kích thước', 'text', '', '', '0', 'FS19'),
+		('Fi129', 'Khối lượng', 'text', '', '', '0', 'FS19'),
+		('Fi130', 'Thương hiệu của', 'text', '', '', '0', 'FS19'),
+		('Fi131', 'Nơi sản xuất', 'text', '', '', '0', 'FS19'),
+
+        /*Dieu hoa */
+		('Fi132', 'Công suất làm lạnh', 'text', '', '', '0', 'FS20'),
+		('Fi133', 'Công suất sưởi ấm', 'text', '', '', '0', 'FS20'),
+		('Fi134', 'Phạm vi làm lạnh hiệu quả', 'text', '', '', '0', 'FS20'),
+		('Fi135', 'Công nghệ Inverter', 'text', '', '', '0', 'FS20'),
+		('Fi136', 'Loại máy', 'text', '', '', '0', 'FS20'),
+		('Fi137', 'Công suất tiêu thụ điện tối đa', 'text', '', '', '0', 'FS20'),
+		('Fi138', 'Nhãn năng lượng tiết kiệm điện', 'text', '', '', '0', 'FS20'),
+
+		('Fi139', 'Tiện ích', 'text', '', '', '0', 'FS21'),
+		('Fi140', 'Chế độ tiết kiệm điện', 'text', '', '', '0', 'FS21'),
+		('Fi141', 'Kháng khuẩn khử mùi', 'text', '', '', '0', 'FS21'),
+		('Fi142', 'Chế độ làm lạnh nhanh', 'text', '', '', '0', 'FS21'),
+		('Fi143', 'Chế độ gió', 'text', '', '', '0', 'FS21'),
+
+		('Fi144', 'Thông tin cục lạnh', 'text', '', '', '0', 'FS22'),
+		('Fi145', 'Thông tin cục nóng', 'text', '', '', '0', 'FS22'),
+		('Fi146', 'Loại Gas sử dụng', 'text', '', '', '0', 'FS22'),
+		('Fi147', 'Chiều dài lắp đặt ống đồng', 'text', '', '', '0', 'FS22'),
+		('Fi148', 'Chiều cao lắp đặt tối đa giữa cục nóng-lạnh', 'text', '', '', '0', 'FS22'),
+		('Fi149', 'Nơi lắp ráp', 'text', '', '', '0', 'FS22'),
+		('Fi150', 'Năm sản xuất', 'text', '', '', '0', 'FS22')
+;
+
+TABLE field;

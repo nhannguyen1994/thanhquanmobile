@@ -1,9 +1,13 @@
 #Product Template
 ##usage
 ``` 
-yarn install
+yarn
 ```
 ##Run
 ``` 
 node index
+
+http://localhost:3000/products
 ```
+
+
