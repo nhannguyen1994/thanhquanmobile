@@ -4,21 +4,21 @@ const {db1, config} = require('../pgp');
 
 // Bluebird is the best promise library available today,
 // and is the one recommended here:
-var promise = require('bluebird');
+const promise = require('bluebird');
 
 
-var model = {
+const model = {
     products: require('../model/products'),
     images: require('../model/images')
 };
 
-var options = {
+const options = {
 
     promiseLib: promise,
 
     extend: obj => {
-        obj.products = model.products(obj, pgp);
-        obj.images = model.images(obj, pgp);
+        obj.products = model.products(obj);
+        obj.images = model.images(obj);
     }
 };
 

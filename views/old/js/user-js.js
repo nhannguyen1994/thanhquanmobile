@@ -45,13 +45,10 @@ $(document).ready(function () {
 	// },10);
 	
 
-
-	$('.user-info-default').show();
-
 	$('.onclick').on('click',function () {
 		var thisTab = $(this).attr('showSmallTabs');
 		$('.sm-tab').hide();
-		$('.' + thisTab).slideDown();
+		$('.' + thisTab).slideDown();	
 	});
 
 
@@ -70,11 +67,5 @@ $(document).ready(function () {
 		$('.password-customize').slideToggle();
 	});
 
-	$('.cancelChangePassBtn').on('click',function () {
-		$('.security').slideToggle();
-		$('.password-customize').slideToggle();
-	});
-
 
 });
-

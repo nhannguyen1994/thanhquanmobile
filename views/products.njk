@@ -60,24 +60,31 @@
 
 			</aside> <!-- end list-menu-box -->
 			<!-- HẾT CỘT NÀY RỒI  //////////////////////////////////////////////////////////////////////////////////////////// -->
-		
+
 
 			<div class="col-md-9 col-sm-6">
 
 			    {% for item_p in products %}
+
                     <div class="col-md-4 col-sm-6">
                         <div class="product-box ph">
-                            {{ images }}
-                            {{ products }}
+
+                            {% set product_id_current = '' %}
+
                             {% for item_i in images %}
 
-                                {{ item_i.image_id }}
+                                {% if(item_i.product_id != product_id_current) %}
+                                    {% if item_i.product_id in item_p.product_id %}
+                                        <img src="/images/products/{{ item_i.url_image }}">
+                                    {% endif %}
+                                    {% set product_id_current = item_i.product_id %}
+                                {% endif %}
 
                             {% endfor %}
-                            <img src="../images/p8.jpg">
+
                             <div class="name-price">
                                 <p class="name-product">{{ item_p.product_name }}</p>
-                                <p class="price-product">{{ item_p.price | round(2, "floor") }} VNĐ</p>
+                                <p class="price-product">{{ item_p.price }} VNĐ</p>
                                 <div class="info-product info-ph">
                                     <div>
                                         <p>{{ item_p.product_name }}</p>

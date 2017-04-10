@@ -3,11 +3,12 @@
 {% block head %}
 <link href="/css/danh-sach-style.css" rel="stylesheet">
 <link href="/css/chi-tiet-style.css" rel="stylesheet">
+<script type="text/javascript" src="/js/detail-js.js"></script>
 {% endblock %}
 
 {% block content %}
     <section class="container" id="list-page">
-		<div class="row mot-hang">
+		<div class="row mot-hang" style="margin-bottom:30px;">
             <a href="" class="big-title big-title-list-page">ĐIỆN THOẠI</a>
             <span></span>
 		</div> <!-- end -row -->
@@ -16,97 +17,25 @@
 
       	<div class="row">
 
-      		<aside class="col-md-2 list-menu-box">
-				<ul>
-					<li class="menu-box"><a class="title-list" href="">HÃNG SẢN XUẤT</a>
-						<ul>
-							<li><a class="chi-tiet-active" href="">APPLE</a></li>
-							<li><a href="">SAMSUNG</a></li>
-							<li><a href="">SONY</a></li>
-							<li><a href="">OPPO</a></li>
-							<li><a href="">ASUS</a></li>
-							<li><a href="">LENOVO</a></li>
-							<li><a href="">Các hãng khác</a></li>
-						</ul>
-					</li>
-					<li class="menu-box"><a class="title-list" href="">GIÁ TIỀN</a>
-						<ul>
-							<li><a href="">Dưới 1 Triệu</a></li>
-							<li><a href="">Từ 1 đến 3 triệu</a></li>
-							<li><a href="">Từ 3 đến 5 triệu</a></li>
-							<li><a href="">Từ 3 đến 7 triệu</a></li>
-							<li><a href="">Từ 7 đến 10 triệu</a></li>
-							<li><a href="">Từ 10 đến 15 triệu</a></li>
-							<li><a href="">Trên 15 triệu</a></li>
-						</ul>
-					</li>
-					<li class="menu-box"><a class="title-list" href="">LOẠI ĐIỆN THOẠI</a>
-						<ul>
-							<li><a href="">IOS (iPhone) </a></li>
-							<li><a href="">Android</a></li>
-							<li><a href="">Hệ điều hành khác</a></li>
-							<li><a href="">Phổ thông</a></li>
-						</ul>
-					</li>
-					
-					
-				</ul>
+			<div class="col-md-6 produce-detail" >
 
-			</aside> <!-- end list-menu-box -->
-
-			<!-- HẾT CỘT NÀY RỒI  //////////////////////////////////////////////////////////////////////////////////////////// -->
-
-      		<div class="col-md-7 produce-detail">
-				<h2 class="name-product">{{ detail.product_name }}</h2>
-			</div>
-
-			<div class="col-md-7 produce-detail" >
 				<div class="image-product-box">
 					
 					<div class="mau mau0">
-						<img class="product-big-image showImageAfterOnclick" src="../images/big.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm1.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm2.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm3.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm4.jpg">
-					</div>
-					<div class="mau mau1">
-						<img class="product-big-image showImageAfterOnclick " src="../images/sm22.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm21.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm26.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm24.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm25.jpg">
-					</div>
-					<div class="mau mau2">
-						<img class="product-big-image showImageAfterOnclick " src="../images/sm31.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm32.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm33.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm34.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm35.jpg">
-					</div>
-					<div class="mau mau3">
-						<img class="product-big-image showImageAfterOnclick " src="../images/sm41.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm42.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm43.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm44.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm46.jpg">
-					</div>
-					<div class="mau mau4">
-						<img class="product-big-image showImageAfterOnclick " src="../images/sm51.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm52.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm53.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm54.jpg">
-						<img class="product-sm-image ClickEvent" src="../images/sm55.jpg">
+						{% for item_i in images %}
+						    {% if(loop.index == 1) %}
+                                <img class="product-big-image showImageAfterOnclick" src="/images/products/{{ item_i.url_image }}">
+                            {% else %}
+                                <img class="product-sm-image ClickEvent" src="/images/products/{{ item_i.url_image }}">
+                            {% endif %}
+                        {% endfor %}
 					</div>
 				</div>
 				
 			</div>
 
-			
-
-
-
-			<div class="col-md-3 col-xs-12 produce-detail-2">
+			<div class="col-md-6 col-xs-12 produce-detail-2">
+			    <h2 class="name-product">{{ detail.product_name }}</h2>
 				<h2 class="price-product">{{ detail.price }} VNĐ</h2>
 				<p class="code">Mã sản phẩm:<span>{{ detail.product_id }}</span></P>
 				<ul class="promotion">
@@ -138,13 +67,6 @@
 					</li>
 				</ul>
 
-				<p class="color-text">Màu sắc :</p>
-				<button productColor="mau0" class="color-box cb0 onclickColor"href=""></button>
-				<button productColor="mau1" class="color-box cb1 onclickColor"href=""></button>
-				<button productColor="mau2" class="color-box cb2 onclickColor"href=""></button>
-				<button productColor="mau3" class="color-box cb3 onclickColor"href=""></button>
-				<button productColor="mau4" class="color-box cb4 onclickColor"href=""></button>
-
   				<p class="quantity color-text"> Hiện có : {{ detail.quantity }} sản phẩm</p>
 
 				<span class="buy product-buy-box" >MUA HÀNG</span>
@@ -152,7 +74,7 @@
 
 			</div>
 
-			<div class="col-md-7 col-sm-12 col-sx-12 produce-detail detail-product-box">
+			<div class="col-md-12 col-sm-12 col-sx-12 produce-detail detail-product-box">
 					<h3>Thông số kỹ thuật </h3>
 					<ul class="cau-hinh-don-gian">
 						<li><p>Màn hình:<span>LED IPS LCD, 5.5", Retina HD<span></p></li>
@@ -166,9 +88,8 @@
 					</ul>
 					<button class="watch-more">Xem cấu hình chi tiết</button>
 					<ul class="cau-hinh-chi-tiet">
-                            {{ JSON.stringify(detail.properties) | dump('\n') }}
                             {% for nameSection, itemSection in detail.properties %}
-                                <li class="label">{{ itemSection }}</li>
+                                <li class="label">{{ nameSection }}</li>
                                 {% for itemField, nameField in itemSection %}
                                     <li>
                                         <p>{{ itemField }}</p>
@@ -180,24 +101,6 @@
 					<button class="watch-more close-button">Đóng</button>
 
 			</div>
-
-
-
-
-
-			<div class="col-md-3 col-xs-12 produce-detail-2 video-box">
-				<p class="big-title video-text">Video sản phẩm</p>
-				<div class="chi-tiet-video embed-responsive embed-responsive-16by9">
-					<iframe class="embed-responsive-item"  src="https://www.youtube.com/embed/R4jul7XuhK0" frameborder="0" allowfullscreen>></iframe>
-				</div>	
-				<div class="video2 chi-tiet-video embed-responsive embed-responsive-16by9">
-					<iframe class="embed-responsive-item"  src="https://www.youtube.com/embed/voPP7LPX01E" frameborder="0" allowfullscreen></iframe>
-				</div>
-
-			</div>		
-
-
-
 
 			</div> <!-- end col-->
 		</div> <!-- end row -->	
@@ -213,7 +116,7 @@
 						<div class="owl-carousel">
 							<div class="owl-carousel-slide">
 								<div class="product-box ph">
-									<img src="../images/p9.jpg">
+									<img src="/images/p9.jpg">
 									<div class="name-price">
 										<p class="name-product">Samsung Galaxy C9 Pro</p>
 										<p class="price-product">11.490.000 VNĐ</p>
@@ -237,7 +140,7 @@
 							</div>
 							<div class="owl-carousel-slide">
 								<div class="product-box ph">
-									<img src="../images/p10.jpg">
+									<img src="/images/p10.jpg">
 									<div class="name-price">
 										<p class="name-product">OPPO F1s</p>
 										<p class="price-product">6.490.000 VNĐ</p>
@@ -261,7 +164,7 @@
 							</div>
 							<div class="owl-carousel-slide">
 								<div class="product-box ph">
-									<img src="../images/p11.jpg">
+									<img src="/images/p11.jpg">
 									<div class="name-price">
 										<p class="name-product">HTC Desire 728G LTE</p>
 										<p class="price-product">3.490.000 VNĐ</p>
@@ -285,7 +188,7 @@
 							</div>
 							<div class="owl-carousel-slide">
 								<div class="product-box ph">
-									<img src="../images/p12.jpg">
+									<img src="/images/p12.jpg">
 									<div class="name-price">
 										<p class="name-product">OPPO A39 (Neo 9s)</p>
 										<p class="price-product">4.490.000 VNĐ</p>
@@ -309,7 +212,7 @@
 							</div>
 							<div class="owl-carousel-slide">
 								<div class="product-box ph">
-									<img src="../images/p4.jpg">
+									<img src="/images/p4.jpg">
 									<div class="name-price">
 										<p class="name-product">iPhone 5s 32GB</p>
 										<p class="price-product">5.990.000 VNĐ</p>
@@ -336,12 +239,6 @@
 					<!-- HẾT HÀNG NÀY RÔI / HẾT HÀNG NÀY RÔI / HẾT HÀNG NÀY RÔI / HẾT HÀNG NÀY RÔI /-->
 				</div>
 
-
-
-		
-	
-
-	
 	</section>
 
 {% endblock %}

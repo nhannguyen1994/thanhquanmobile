@@ -6,6 +6,7 @@ const db = require('./routes/routes.js');
 
 const express = require('express');
 const app = express();
+const bodyParser = require("body-parser");
 const nunjucks = require('nunjucks');
 
 
@@ -59,6 +60,10 @@ createProduct('LGBTUS09EN3', 'Điều hòa LG 9000 BTU S09EN3', '', 'dh', '', '2
 
 */
 
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
 nunjucks.configure('views', {
   autoescape: true,
   express   : app,
@@ -72,12 +77,60 @@ app.set('view engine', 'html');
 app.use(express.static(__dirname + '/public'));
 
 
+app.get('/', function(req, res) {
+
+    //res.render('old/index1.html');
+    log(req.body);
+    db.task(t => {
+        return t.batch([
+            db.products.all(),
+            db.images.all()
+        ]);
+    })
+    .then(data => {
+        res.render('index.njk', {title: 'Home', products : data[0], images : data[1]});
+    })
+    .catch(error => {
+        // error;
+    });
+
+});
 
 app.get('/products', function(req, res) {
-    //let images = db.images.all(req);
+    db.task(t => {
+        return t.batch( [
+            db.products.all(),
+            db.images.all()
+        ]);
+    })
+    .then(data => {
+        res.render('products.njk', {title: 'Home', products : data[0], images : data[1]});
+    })
+    .catch(error => {
+        res.json({
+            success: false,
+            error: error.message || error
+        });
+    });
+
+    /*
     db.products.all(req)
         .then(data => {
-            res.render('products.njk', {title: 'Products', products : data});
+            let id_product = [];
+            data.forEach((index) => {
+               id_product.push(index.product_id);
+            });
+            db.images.all(req)
+                .then(data1 => {
+                    res.render('products.njk', {title: 'Products', products : data, images : data1});
+                })
+                .catch(error => {
+                res.json({
+                    success: false,
+                    error: error.message || error
+                });
+            });
+            //res.render('products.njk', {title: 'Products', products : data, images : images});
         })
         .catch(error => {
             res.json({
@@ -85,40 +138,51 @@ app.get('/products', function(req, res) {
                 error: error.message || error
             });
         });
+    */
 });
-// get all products:
-//GET('/products', db.products.all, 'product');
 
-//GET('/product/detail/:id', req => db.products.detail(req.params.id), 'detail');
+app.get('/product/detail/:id', function(req, res) {
 
-// Generic GET handler;
-/*
-function GET(url, handler, page) {
-    app.get(url, (req, res) => {
+    let id = req.params.id;
 
-        handler(req)
-            .then(data => {
-                if(page === 'product'){
-                    res.render('products.njk', {title: 'Products', products : data});
-                }else if(page === 'detail'){
-                    res.render('detail.njk', {title: data.product_name, data : data});
-                }else {
-                    res.json({
-                        success: true,
-                        data
-                    });
-                }
-
-            })
-            .catch(error => {
+    db.task(t => {
+        return t.batch([
+            db.products.detail(id),
+            db.images.listAllImagesById(id)
+        ]);
+    })
+    .then(data => {
+        res.render('detail.njk', {title: 'Detail', detail : data[0], images : data[1]});
+    })
+    .catch(error => {
+        res.json({
+            success: false,
+            error: error.message || error
+        });
+    });
+    /*
+    db.products.detail(id)
+        .then(data => {
+            db.images.listAllImagesById(id)
+                .then(data1 => {
+                    res.render('detail.njk', {title: 'Detail', detail : data, images : data1});
+                })
+                .catch(error => {
                 res.json({
                     success: false,
                     error: error.message || error
                 });
             });
-    });
-}
-*/
+            //res.render('detail.njk', {title: 'Detail', detail : data});
+        })
+        .catch(error => {
+            res.json({
+                success: false,
+                error: error.message || error
+            });
+        });
+        */
+});
 
 const port = 3000;
 app.listen(port, () => {
