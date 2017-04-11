@@ -1,44 +1,108 @@
-'use strict';
 
-const {db1, config} = require('../pgp');
+module.exports = (app, db) => {
+    app.get('/', function (req, res) {
 
-// Bluebird is the best promise library available today,
-// and is the one recommended here:
-const promise = require('bluebird');
+        //res.render('old/index1.html');
+        db.task(t => {
+            return t.batch([
+                db.products.all(),
+                db.images.all()
+            ]);
+        })
+            .then(data => {
+                res.render('index.njk', {title: 'Home', products: data[0], images: data[1]});
+            })
+            .catch(error => {
+                // error;
+            });
 
+    });
 
-const model = {
-    products: require('../model/products'),
-    images: require('../model/images')
-};
+    app.get('/products', function (req, res) {
+        db.task(t => {
+            return t.batch([
+                db.products.all(),
+                db.images.all()
+            ]);
+        })
+            .then(data => {
+                res.render('products.njk', {title: 'Home', products: data[0], images: data[1]});
+            })
+            .catch(error => {
+                res.json({
+                    success: false,
+                    error: error.message || error
+                });
+            });
 
-const options = {
+        /*
+         db.products.all(req)
+         .then(data => {
+         let id_product = [];
+         data.forEach((index) => {
+         id_product.push(index.product_id);
+         });
+         db.images.all(req)
+         .then(data1 => {
+         res.render('products.njk', {title: 'Products', products : data, images : data1});
+         })
+         .catch(error => {
+         res.json({
+         success: false,
+         error: error.message || error
+         });
+         });
+         //res.render('products.njk', {title: 'Products', products : data, images : images});
+         })
+         .catch(error => {
+         res.json({
+         success: false,
+         error: error.message || error
+         });
+         });
+         */
+    });
 
-    promiseLib: promise,
+    app.get('/product/detail/:id', function (req, res) {
 
-    extend: obj => {
-        obj.products = model.products(obj);
-        obj.images = model.images(obj);
-    }
-};
+        let id = req.params.id;
 
-
-/*
-const config = {
-    host: 'localhost',
-    port: 5433,
-    database: 'dienthoai',
-    user: 'postgres',
-    password: 'abc'
-};
-
-console.log(config);
-console.log(config1);
-*/
-
-const pgp = require('pg-promise')(options);
-
-
-const db = pgp(config);
-//console.log(db);
-module.exports = db;
+        db.task(t => {
+            return t.batch([
+                db.products.detail(id),
+                db.images.listAllImagesById(id)
+            ]);
+        })
+            .then(data => {
+                res.render('detail.njk', {title: 'Detail', detail: data[0], images: data[1]});
+            })
+            .catch(error => {
+                res.json({
+                    success: false,
+                    error: error.message || error
+                });
+            });
+        /*
+         db.products.detail(id)
+         .then(data => {
+         db.images.listAllImagesById(id)
+         .then(data1 => {
+         res.render('detail.njk', {title: 'Detail', detail : data, images : data1});
+         })
+         .catch(error => {
+         res.json({
+         success: false,
+         error: error.message || error
+         });
+         });
+         //res.render('detail.njk', {title: 'Detail', detail : data});
+         })
+         .catch(error => {
+         res.json({
+         success: false,
+         error: error.message || error
+         });
+         });
+         */
+    });
+}
