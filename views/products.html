@@ -1,4 +1,4 @@
-{% extends "index.njk" %}
+{% extends "index.html" %}
 
 {% block head %}
     <link href="/css/danh-sach-style.css" rel="stylesheet">
@@ -48,8 +48,8 @@
 					</li>
 					<li class="menu-box"><span class="title-list loai-dien-thoai-title" >LOẠI ĐIỆN THOẠI</span>
 						<ul class="loai-dien-thoai">
-						    {% for item in categories %}
-							    <li><a href="/category/{{ item.cat_id }}">{{ item.cat_name }}</a></li>
+						    {% for item in product_type %}
+							    <li><a href="/product_type/{{ item.product_type_id }}">{{ item.name }}</a></li>
 							{% endfor %}
 						</ul>
 					</li>
@@ -61,14 +61,13 @@
 			</aside> <!-- end list-menu-box -->
 			<!-- HẾT CỘT NÀY RỒI  //////////////////////////////////////////////////////////////////////////////////////////// -->
 
-
+            {% block sideLeftProduct %}
 			<div class="col-md-9 col-sm-6">
 
 			    {% for item_p in products %}
 
                     <div class="col-md-4 col-sm-6">
                         <div class="product-box ph">
-
                             {% set product_id_current = '' %}
 
                             {% for item_i in images %}
@@ -90,10 +89,11 @@
                                         <p>{{ item_p.product_name }}</p>
                                         <p>{{ item_p.price }} VNĐ</p>
                                         <span></span>
-                                        <p>Màn hình: 6", Full HD</p>
-                                        <p>HĐH: Android 6.0 (Marshmallow)</p>
-                                        <p>CPU: Snapdragon 653</p>
-                                        <p>Camera: 18 MP, Selfie: 5 MP</p>
+                                        <!--
+                                        {% for des1, des2 in item_p.main_property %}
+                                            <p>{{ des1 }} {{ des2 }}</p>
+                                        {% endfor %}
+                                        -->
                                     </div>
                                     <a href="/product/detail/{{ item_p.product_id }}" class="watch">Xem chi tiết</a>
                                     <span class="buy">Mua hàng</span>
@@ -120,6 +120,6 @@
 			</div><!-- end col -->
 
 		</div><!-- end row -->
-
+        {% endblock %}
 	</section>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends "index.njk" %}
+{% extends "index.html" %}
 
 {% block head %}
 <link href="/css/danh-sach-style.css" rel="stylesheet">
@@ -9,7 +9,7 @@
 {% block content %}
     <section class="container" id="list-page">
 		<div class="row mot-hang" style="margin-bottom:30px;">
-            <a href="" class="big-title big-title-list-page">ĐIỆN THOẠI</a>
+            <a href="" class="big-title big-title-list-page">{{ detail.product_name }}</a>
             <span></span>
 		</div> <!-- end -row -->
 
@@ -39,32 +39,14 @@
 				<h2 class="price-product">{{ detail.price }} VNĐ</h2>
 				<p class="code">Mã sản phẩm:<span>{{ detail.product_id }}</span></P>
 				<ul class="promotion">
+				    {% for des1, des2 in detail.description %}
 					<li>
 						<ul>
-							<li>Trong hộp có :</li>
-							<li>Sạc, Tai nghe, Sách hướng dẫn, Jack chuyển tai nghe 3.5mm, Cáp, Cây lấy sim</li>
+							<li>{{ des1 }}</li>
+							<li>{{ des2 }}</li>
 						</ul>
 					</li>
-					<li>
-						<ul>
-							<li>Bảo hành chính hãng :</li>
-							<li class="cut-bot">Thân máy 12 tháng</li>
-							<li class="cut-bot">Sạc 12 tháng</li>
-							<li>Tai nghe 12 tháng</li>
-						</ul>
-					</li>
-					<li>
-						<ul>
-							<li>Giao hàng :</li>
-							<li>Tận nơi miễn phí trong 30 phút</li>
-						</ul>
-					</li>
-					<li>
-						<ul>
-							<li>Đổi hàng :</li>
-							<li>1 đổi 1 trong 1 tháng với sản phẩm lỗi</li>
-						</ul>
-					</li>
+                    {% endfor %}
 				</ul>
 
   				<p class="quantity color-text"> Hiện có : {{ detail.quantity }} sản phẩm</p>
@@ -77,18 +59,13 @@
 			<div class="col-md-12 col-sm-12 col-sx-12 produce-detail detail-product-box">
 					<h3>Thông số kỹ thuật </h3>
 					<ul class="cau-hinh-don-gian">
-						<li><p>Màn hình:<span>LED IPS LCD, 5.5", Retina HD<span></p></li>
-						<li><p>Hệ điều hành:<span>iOS 10</span></p></li>
-						<li><p>CPU:<span>Apple A10 Fusion 4 nhân 64-bit</span></p></li>
-						<li><p>Camera sau:<span>Hai camera 12 MP</span></p></li>
-						<li><p>Camera trước:<span>7 MP</span></p></li>
-						<li><p>Bộ nhớ trong:<span>256GB</span></p></li>
-						<li><p>Thẻ SIM:<span>1 SIM, Nano SIM<span></p></li>
-						<li><p>Dung lượng pin:<span>2900 mAh</span></p></li>
+					    {% for main1, main2 in detail.main_property %}
+						    <li><p>{{ main1 }}<span>{{ main2 }}<span></p></li>
+						{% endfor %}
 					</ul>
 					<button class="watch-more">Xem cấu hình chi tiết</button>
 					<ul class="cau-hinh-chi-tiet">
-                            {% for nameSection, itemSection in detail.properties %}
+                            {% for nameSection, itemSection in detail.detail_property %}
                                 <li class="label">{{ nameSection }}</li>
                                 {% for itemField, nameField in itemSection %}
                                     <li>

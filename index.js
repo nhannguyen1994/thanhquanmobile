@@ -8,7 +8,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
 const nunjucks = require('nunjucks');
-const data = require('./data/data.json');
+
 
 /*
 let c_arr = [];

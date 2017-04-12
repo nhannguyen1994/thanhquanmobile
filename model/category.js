@@ -5,10 +5,10 @@
 module.exports = (rep) => {
 
     return {
-        listAllImagesById: id =>
-            rep.any('SELECT * FROM images WHERE product_id = $1', id),
+        childrenCat: id =>
+            rep.any('SELECT * FROM product_type WHERE parent = $1', id),
 
         all: () =>
-            rep.any('SELECT * FROM images')
+            rep.any('SELECT * FROM product_type')
     };
 };

@@ -9,7 +9,8 @@ const promise = require('bluebird');
 
 const model = {
     products: require('./model/products'),
-    images: require('./model/images')
+    images: require('./model/images'),
+    product_type: require('./model/category')
 };
 
 const options = {
@@ -19,6 +20,7 @@ const options = {
     extend: obj => {
         obj.products = model.products(obj);
         obj.images = model.images(obj);
+        obj.product_type = model.product_type(obj);
     }
 };
 
