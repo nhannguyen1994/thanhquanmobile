@@ -340,9 +340,9 @@ header {
 	overflow: hidden;
 	max-width: 100%;
 }
-.menu-dropdown1 {
+/*.menu-dropdown1 {
 	width: 83%;
-}
+}*/
 @media (min-width:1px) {
 	.menu-dropdown{top:162px;left:0px;}
 }
