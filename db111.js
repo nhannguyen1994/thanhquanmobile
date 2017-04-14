@@ -1,5 +1,5 @@
 'use strict';
-
+/*
 const {db1, config} = require('./pgp');
 
 // Bluebird is the best promise library available today,
@@ -25,18 +25,7 @@ const options = {
 };
 
 
-/*
-const config = {
-    host: 'localhost',
-    port: 5433,
-    database: 'dienthoai',
-    user: 'postgres',
-    password: 'abc'
-};
 
-console.log(config);
-console.log(config1);
-*/
 
 const pgp = require('pg-promise')(options);
 
@@ -44,3 +33,4 @@ const pgp = require('pg-promise')(options);
 const db = pgp(config);
 //console.log(db);
 module.exports = db;
+*/

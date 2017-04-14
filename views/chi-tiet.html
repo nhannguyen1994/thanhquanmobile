@@ -1,0 +1,135 @@
+{% extends "index.html" %} {% block head %}
+<link href="/css/danh-sach-style.css" rel="stylesheet">
+<link href="/css/chi-tiet-style.css" rel="stylesheet">
+<script type="text/javascript" src="/js/detail-js.js"></script>
+{% endblock %}
+
+{% block content %}
+<section class="container" id="list-page">
+	<div class="row mot-hang" style="margin-bottom:30px;">
+		<a href="/dien-thoai" class="big-title big-title-list-page">ĐIỆN THOẠI</a>
+		<span></span>
+	</div>
+	<!-- end -row -->
+
+	<!-- THANH TIÊU ĐỀ //////////////////////////////////////////////////////////////////////// -->
+
+	<div class="row">
+
+		<div class="col-md-6 produce-detail">
+			<div class="image-product-box">
+
+				<div class="mau mau0">
+					{% for item_i in images %} 
+						{% if(loop.index == 1) %}
+							<img class="product-big-image showImageAfterOnclick" src="/images/products/{{ item_i.url_image }}">
+						{% else %}
+							<img class="product-sm-image ClickEvent" src="/images/products/{{ item_i.url_image }}">
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+
+		</div>
+
+		<div class="col-md-6 col-xs-12 produce-detail-2">
+			<h2 class="name-product">{{ detail.product_name }}</h2>
+			<h2 class="price-product"> {{ detail.price }} VNĐ</h2>
+			<p class="code">Mã sản phẩm:<span>{{ detail.product_id }}</span></p>
+			<ul class="promotion">
+				<li>
+					{% for prop, value in detail.description %}
+					<ul>
+						<li>{{prop}}</li>
+						<li>{{value}}</li>
+					</ul>
+					{% endfor %}
+				</li>
+			</ul>
+
+			<p class="quantity color-text"> Hiện có : {{ detail.quantity }} sản phẩm</p>
+
+			<span class="buy product-buy-box">MUA HÀNG</span>
+			<span class="buy product-buy-box added">Đã thêm vào giỏ hàng</span>
+
+		</div>
+
+		<div class="col-md-12 col-sm-12 col-sx-12 produce-detail detail-product-box">
+			<h3>Thông số kỹ thuật </h3>
+			<ul class="cau-hinh-don-gian">
+				{% for mainProp, propValue in detail.main_property %}
+				<li>
+					<p>{{mainProp}}<span>{{propValue}}</span></p>
+				</li>
+				{% endfor %}
+			</ul>
+			<button class="watch-more">Xem cấu hình chi tiết</button>
+			<ul class="cau-hinh-chi-tiet">
+				{% for mainProp, propValue in detail.detail_property %}
+				<li class="label">{{mainProp}}</li>
+				{% for detailProp, value in propValue %}
+				<li>
+					<p>{{detailProp}}</p>
+					<p>{{value}}</p>
+				</li>
+				{% endfor %} {% endfor %}
+			</ul>
+			<button class="watch-more close-button">Đóng</button>
+
+		</div>
+
+	</div>
+	<!-- end col-->
+	</div>
+	<!-- end row -->
+
+	<!-- HẾT CỘT NÀY RỒI  //////////////////////////////////////////////////////////////////////////////////////////// -->
+	<div class="container">
+		<div class="row mot-hang">
+			<a href="/hang-dien-thoai/{{data.mainProduct.manufacturer_id}}" class="big-title">SẢN PHẨM TƯƠNG TỰ</a>
+			<span></span>
+		</div>
+		<!-- end row -->
+
+		<div class="row">
+			<div class="owl-carousel">
+				{% for each in data.similarProduct %}
+				<div class="owl-carousel-slide">
+					<div class="product-box ph">
+						{#<img src="/images/{{each.image}}">#}
+						<img src="/images/p8.jpg">
+						<div class="name-price">
+							<p class="name-product">{{each.product_name}}</p>
+							<p class="price-product">{{each.price}} VNĐ</p>
+							<div class="info-product info-ph">
+								<div>
+									<p>{{each.product_name}}</p>
+									<p>{{each.price}} VNĐ</p>
+									<span></span>
+									<p>Màn hình: {{each.main_property['Kích thước màn hình']}}</p>
+									<p>HĐH: {{each.main_property['Hệ điều hành']}}</p>
+									<p>Camera: {{each.main_property['Máy ảnh chính']}}</p>
+									<p>PIN: {{each.main_property['Dung lượng pin (mAh)']}}</p>
+								</div>
+								<a href="chi-tiet.html" class="watch">Xem chi tiết</a>
+								<span class="buy">Mua hàng</span>
+								<span class="buy added">Đã thêm vào giỏ hàng</span>
+							</div>
+							<!-- end info-box -->
+						</div>
+						<!-- end name-price -->
+					</div>
+					<!-- end product-box -->
+				</div>
+				{% endfor %}
+
+			</div>
+			<!-- end owl-carousel -->
+		</div>
+		<!-- end row -->
+		<!-- HẾT HÀNG NÀY RÔI / HẾT HÀNG NÀY RÔI / HẾT HÀNG NÀY RÔI / HẾT HÀNG NÀY RÔI /-->
+	</div>
+
+</section>
+
+{% endblock %}

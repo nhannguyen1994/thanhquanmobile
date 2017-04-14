@@ -1,6 +1,6 @@
 {
   "development": {
-    "user": "postgres",
+    "username": "postgres",
     "password": "abc",
     "database": "dienthoai",
     "host"    : "localhost",

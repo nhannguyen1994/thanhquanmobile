@@ -2,14 +2,12 @@
 
 let log = console.log;
 
-const db = require('./db.js');
-
 const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
 const nunjucks = require('nunjucks');
-
-
+const parseurl = require('parseurl');
+const session = require('express-session');
 /*
 let c_arr = [];
 const createCategory = (cat_id, cat_name, status) => {
@@ -70,13 +68,22 @@ nunjucks.configure('views', {
   cache : false
 });
 
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}));
+
+
+
 app.engine('html', nunjucks.render);
 
 app.set('view engine', 'html');
 
 app.use(express.static(__dirname + '/public'));
 
-require('./routes/routes.js')(app, db);
+
+require('./routes/routes')(app, express, parseurl);
 
 const port = 3000;
 app.listen(port, () => {
