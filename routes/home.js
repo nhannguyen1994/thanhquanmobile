@@ -15,6 +15,7 @@ module.exports = function (express, cart) {
     const router = express.Router();
 
     router.get('/', (req, res, next) => {
+
         log(req.session.item);
         db.task(t => {
             return t.batch([

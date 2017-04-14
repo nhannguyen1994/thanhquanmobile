@@ -82,6 +82,23 @@ app.set('view engine', 'html');
 
 app.use(express.static(__dirname + '/public'));
 
+let cart = '';
+
+
+app.use(function (req, res, next) {
+  log(1);
+    let session = req.session.item;
+
+    if (!session) {
+        session = req.session.item = {};
+    }
+    if(session['cart'] > 0) {
+        session['cart'] = session['cart'] + 1;
+    }else{
+      session['cart'] = 1;
+    }
+    next();
+});
 
 require('./routes/routes')(app, express, parseurl);
 

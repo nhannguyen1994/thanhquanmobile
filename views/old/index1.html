@@ -228,6 +228,14 @@
             'validation': 'nam|nu',
             'required': '1',
             'parent': 'FS05'
+        }, {
+            'id': 'Fi14',
+            'name': 'Ngay sinh',
+            'type': 'date',
+            'description': 'Lorem1',
+            'validation': '',
+            'required': '1',
+            'parent': 'FS05'
         }
     ];
 
@@ -316,6 +324,10 @@
         }else if(type === 'number'){
             $('#results table').append('<tr class="box_function ' + id + '"><td>' + name + '</td><td>' +
                 '<input type="number" name="field[]">' +
+                '</td></tr>');
+        }else if(type === 'date'){
+            $('#results table').append('<tr class="box_function ' + id + '"><td>' + name + '</td><td>' +
+                '<input type="date" name="field[]">' +
                 '</td></tr>');
         }else if(type === 'textarea'){
             $('#results table').append('<tr class="box_function ' + id + '"><td>' + name + '</td><td>' +

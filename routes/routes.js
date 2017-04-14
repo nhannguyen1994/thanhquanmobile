@@ -1,16 +1,5 @@
 module.exports = (app, express, parseurl) => {
-    let cart = '';
-    app.use(function (req, res, next) {
-        let session = req.session.item;
 
-        if (!session) {
-            session = req.session.item = {}
-        }
-
-        session['cart'] = (session['cart'] | 0)  + 1;
-        cart = req.session.item;
-        next();
-    });
     /*
     app.get('/foo', function (req, res, next) {
         res.send('you viewed this page ' + req.session.item + ' times')
