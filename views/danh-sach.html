@@ -24,10 +24,9 @@
 				</li>
 				<li class="menu-box"><span class="title-list nhan-hieu-title">HÃNG SẢN XUẤT</span>
 					<ul class="nhan-hieu">
-						{# 4 or 5 main manufactuer #} {% for each in manufacturer %}
-						<li><a href="/hang-dien-thoai/{{each.manufacturer_name}}">{{each.manufacturer_name}}</a></li>
-						{% endfor %}
 						<li><a href="/hang-dien-thoai/apple">APPLE</a></li>
+						<li><a href="/hang-dien-thoai/samsung">SAMSUNG</a></li>
+						<li><a href="/hang-dien-thoai/oppo">OPPO</a></li>
 						<li><a href="/hang-dien-thoai/cac-hang-khac">Các hãng khác</a></li>
 					</ul>
 				</li>
@@ -42,15 +41,6 @@
 						<li><a href="/dien-thoai?gia=tren15">Trên 15 triệu</a></li>
 					</ul>
 				</li>
-				<li class="menu-box"><span class="title-list loai-dien-thoai-title">LOẠI ĐIỆN THOẠI</span>
-					<ul class="loai-dien-thoai">
-						{% for each in category %}
-						<li><a href="/loai-dien-thoai/{{ each.cat_id }}">{{ each.cat_name }}</a></li>
-						{% endfor %}
-					</ul>
-				</li>
-
-
 			</ul>
 
 

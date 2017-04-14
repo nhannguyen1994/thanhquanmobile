@@ -20,18 +20,13 @@
 			<div class="image-product-box">
 
 				<div class="mau mau0">
-					{% for item_i in images %} 
-					{% if(loop.index == 1) %}
-					<img class="product-big-image showImageAfterOnclick" src="/images/products/{{ item_i.url_image }}"> 
+					{% for each in data.image %}
+					{% if loop.first %}
+						<img class="product-big-image showImageAfterOnclick" src="/images/products/{{data.mainProduct.product_id}}/{{each.image_name}}"> 
 					{% else %}
-					<img class="product-sm-image ClickEvent" src="/images/products/{{ item_i.url_image }}"> 
-					{% endif %} 
-					{% endfor %}
-					<img class="product-big-image showImageAfterOnclick" src="/images/big.jpg">
-					<img class="product-sm-image ClickEvent" src="/images/sm1.jpg">
-					<img class="product-sm-image ClickEvent" src="/images/sm2.jpg">
-					<img class="product-sm-image ClickEvent" src="/images/sm3.jpg">
-					<img class="product-sm-image ClickEvent" src="/images/sm4.jpg">
+						<img class="product-sm-image ClickEvent" src="/images/products/{{data.mainProduct.product_id}}/{{each.image_name}}"> 
+					{% endif %}
+					{% endfor%}
 				</div>
 			</div>
 
