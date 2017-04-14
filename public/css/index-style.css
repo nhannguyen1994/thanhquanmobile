@@ -1039,3 +1039,33 @@ h4#myModalLabel.modal-title{
 .usn {
 	display: none;
 }
+
+.mm-pk .menu-dropdown ul {
+    float: left;
+    padding: 5px 30px;
+    width: 50%;
+}
+
+.mm-pk .menu-dropdown2 ul li a {
+    /* padding-left: 60px; */
+    background-size: contain;
+    /* margin-bottom: 20px; */
+}
+
+.mm-pk .menu-dropdown2 ul li a{
+	padding-left:0;
+}
+li.mm-pk ul li a {
+    padding: 10px 0;
+    margin: 0;
+}
+
+
+li.mm-pk .menu-dropdown ul {
+    width: 100%;
+}
+
+li.mm-pk ul li {
+    width: 50%;
+    float: left;
+}
