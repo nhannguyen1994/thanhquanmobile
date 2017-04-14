@@ -2,32 +2,21 @@
 <html lang="vi">
 
 <head>
-<<<<<<< HEAD
 	{% include "head.html" %} 
 	{% block head %}
 	<link rel="stylesheet" type="text/css" href="/css/login-form-style.css"> 
 	<script src="/owlcarousel/owl.carousel.min.js"></script>
 	<script src="/owlcarousel/carousel.js"></script>
 	{% endblock %}
-=======
-	{% include "head.html" %} {% block head %}
-	<link rel="stylesheet" type="text/css" href="/css/login-form-style.css"> {% endblock %}
->>>>>>> a34842d5390883aa5d6634985042bdeebfd83222
 </head>
 
 <body>
 		<header>
 			{% include "header.html" %}
 		</header>
-<<<<<<< HEAD
-		{% include 'search-bar.html' %} {% block content %}
-=======
-		{% include 'search-bar.html' %}
-
+		{% include 'search-bar.html' %} 
 		{% block content %}
->>>>>>> a34842d5390883aa5d6634985042bdeebfd83222
 		<div class="container banner-box">
-
 			<div class="row">
 				<div class="col-md-9 no-padding">
 					<div id="carousel-example-generic" class="carousel1 slide" data-ride="carousel">
@@ -90,18 +79,11 @@
 
 			<div class="row">
 				<div class="owl-carousel">
-<<<<<<< HEAD
 					{% for each in data.hotestProduct %}
 					<div class="owl-carousel-slide">
 						<div class="product-box ph">
 							{#<img src="/images/{{each.image}}">#}
 							<img src="/images/p1.jpg">
-=======
-					{% for each in productHot %}
-					<div class="owl-carousel-slide">
-						<div class="product-box ph">
-							<img src="/images/products/{{each.product_id}}/{{each.product_id}}_0.jpg">
->>>>>>> a34842d5390883aa5d6634985042bdeebfd83222
 							<div class="name-price">
 								<p class="name-product">{{each.product_name}}</p>
 								<p class="price-product">{{each.price}} VNĐ</p>
@@ -152,18 +134,11 @@
 
 			<div class="row">
 				<div class="owl-carousel">
-<<<<<<< HEAD
 					{% for each in data.newestProduct %}
 					<div class="owl-carousel-slide">
 						<div class="product-box ph">
 							{#<img src="/images/{{each.image}}">#}
 							<img src="/images/p2.jpg">
-=======
-					{% for each in productNew %}
-					<div class="owl-carousel-slide">
-						<div class="product-box ph">
-							<img src="/images/products/{{each.product_id}}/{{each.product_id}}_0.jpg">
->>>>>>> a34842d5390883aa5d6634985042bdeebfd83222
 							<div class="name-price">
 								<p class="name-product">{{each.product_name}}</p>
 								<p class="price-product">{{each.price}} VNĐ</p>

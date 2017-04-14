@@ -1,5 +1,5 @@
 /**
- * Created by Linh Ngo in 13/04/2017
+ * Created by Linh Ngo in 14/04/2017
  */
 //=========USING NIGHTMARE JS TO CRAWL MOBILE PHONE PRODUCT PAGE===============
 
@@ -18,7 +18,7 @@ const pgp = require('pg-promise');
 //-------------------------------------------
 let productData = [];
 let imageData = [];
-let allUrl = [];
+
 /**
  * Main crawl function runs through an array of url links and crawl data in each link
  * @param {*} array of url 
@@ -33,13 +33,13 @@ function crawl(arr, cb) {
             .evaluate(function () {
                 try {
                     let obj = {};
-                    //let url = window.location.href;
                     let name = document.querySelector('h1[itemprop=name] strong').innerText.split('-')[0].trim();
                     let manufacturer = document.querySelector('.simple-prop p span a').innerText.split('-')[0].split(' ')[0].trim();
                     let price = parseInt(document.querySelector("[itemprop='price']").innerText.split('₫')[0].split(".").join("").trim());
                     let mainPropertyAll = document.querySelectorAll('.simple-prop p');
                     let detailPropertyMain = document.querySelectorAll('.product-prop-details .group');
                     let detailPropertyAll = document.querySelectorAll('.product-prop-details [itemprop=feature]');
+                    // fixed description
                     let desObj = {
                         "Bảo hành chính hãng": "Thân máy 12 tháng. Sạc 12 tháng. Tai nghe 12 tháng",
                         "Giao hàng": "Giao hàng miễn phí trong 2 tiếng (nếu đặt hàng sau 19h cửa hàng sẽ giao hàng vào hôm sau)",
@@ -113,19 +113,15 @@ function crawl(arr, cb) {
                 try {
                     let id = shortid.generate();
                     res['product_id'] = id;
-                    /*
-                    // export url and product id to url.json
-                    let url = {};
-                    url[id] = res['url'];
-                    allUrl.push(url);
-                    exportJson(allUrl, 'url.json');
-                    */
-
-                    // update images to image.json
-                    // create dir for the product images
+                    
+                    // Create dir for the product images before downloading
                     let destPath = __dirname + '/img/' + id;
-                    shell.mkdir('-p', destPath);
-                    //console.log(res['image']);
+                    shell.mkdir('-p', destPath);   
+                    /**
+                     * Download image function uses module 'image-downloader'
+                     * @param {*} src: image url
+                     * @param {*} cb 
+                     */
                     let downloadImg = (src, cb) => {
                         let index = res['image'].indexOf(src);
                         let options = {
@@ -135,8 +131,8 @@ function crawl(arr, cb) {
                         download.image(options)
                             .then(({ filename, image }) => {
                                 let imgName = filename.split(`/${id}/`)[1];
-                                //arr.push(imgName);
-                                index++;
+                                // after downloading image, use cb(null, imgName) to return imgName to the array of final results
+                                // the array is imgArr in the async function below
                                 cb(null, imgName);
                                 //console.log('File saved to', filename)
                             }).catch((err) => {
@@ -144,43 +140,37 @@ function crawl(arr, cb) {
                             });
                     };
 
+                    // Use async.map to ensure that all images are downloaded before exporting to exportToDB
+                    /**
+                     * @param: res['image']: an array of images url
+                     * @param: downloadImg: a download image function -> apply this function to each image url
+                     * 
+                     */
                     async.map(res['image'], downloadImg, (err, imgArr) => {
+                        // here imgArr is final result, an array contains all image names of the product 
                         exportToDB(imgArr);
                     })
 
-                    /*
-                    let imgObj = {};
-                    imgObj['product_id'] = id;
-                    imgObj['image'] = arr;
-                    //-----------Export to json file-----------------
-                    //update images every crawl time to image_data.json
-                    imageData.push(imgObj);
-                    exportJson(imageData, 'image_data_2.json');
-                    productData.push(res);                    
-                    exportJson(productData, 'product_data_2.json');
-                    */
-
                     let exportToDB = (imgArr) => {
-                        //update product data every crawl time
+                        //export product data to DB every crawl time
                         //delete some unnecessary properties
                         delete res['image'];
                         delete res['detail_property']['Bộ sản phẩm'];
                         delete res['detail_property']['Thông tin cơ bản'];
-                        //console.log(res);
 
                         //-----------Export to database directly---------
                         //console.log(res);
+                        //export product data to product table
                         db.none('INSERT INTO product_new VALUES(${product_id}, ${product_name}, ${product_template_id}, ${category_id}, ${manufacturer_id}, ${sales_volume}, ${store_day}, ${price}, ${quantity}, ${description}, ${main_property}, ${detail_property})', res)
                             .then(() => {
-                                // success;
                                 console.log("insert product success");
                             })
                             .then(() => {
                                 //console.log(imgArr);
+                                //loop through the array of images to insert to product image table
                                 imgArr.forEach(imgName => {
                                     db.none('INSERT INTO product_image(image_name, product_id) VALUES(${image_name}, ${product_id})', { image_name: imgName, product_id: id })
                                         .then(() => {
-                                            // success;
                                             console.log("insert images success:" + imgName);
                                         })
                                         .catch(error => {
@@ -192,7 +182,7 @@ function crawl(arr, cb) {
                                 console.log('Insert product error:' + error.message);
                             });
                     }
-
+                    // after sucessfully crawl and export product data, run callback to run test() for the next url
                     cb(null, res);
                 } catch (err) {
                     console.log(err.message);
@@ -200,12 +190,13 @@ function crawl(arr, cb) {
                 }
             });
     }
-    // so luong web truy cap 1 luc
+    // Use async.mapLimit to only crawl 2 products at the same time
     async.mapLimit(arr, 2, test, function (err, res) {
         cb(null, res);
     });
 }
 
+//-----------INITIAL CRAWL TO GET PRODUCT URL----------------------
 nightmare
     .goto('https://hoanghamobile.com/dien-thoai-di-dong-c14.html')
     .wait(1000)
@@ -231,15 +222,3 @@ nightmare
         console.error('Search failed:', err.message);
     });
 
-function exportJson(arr, filename) {
-    let json = {};
-    let n = arr.length;
-    for (let i = 0; i < n; i++) {
-        json[i] = arr[i];
-    }
-    let jsonString = JSON.stringify(json);
-    fs.writeFile(filename, jsonString, (err) => {
-        if (err) throw err;
-        console.log('The file has been saved!');
-    });
-}
