@@ -12,3 +12,11 @@ HOANGHAMOBILE has pagination and the first product row of the next page is the s
 * Reconfig database connection in file config.json
 
 #### IMAGES ARE DOWNLOAD TO FOLDER IMG AND EACH PRODUCT HAS THEIR OWN FOLDER 
+
+#### In crawl scripts, it only updates or inserts product to the tables named 'product_new' and 'product_image', changes table names if needed
+1. Create tables first in your DB with correct column names
+
+```sql
+    CREATE TABLE product_new(product_id TEXT PRIMARY KEY, product_name TEXT, product_template_id TEXT, category_id TEXT, manufacturer_id TEXT, sales_volume INTEGER, store_day TEXT, price INTEGER, quantity INTEGER, description JSON, main_property JSON, detail_property JSON);
+    CREATE TABLE product_image(image_id SERIAL PRIMARY KEY, image_name TEXT, product_id TEXT, FOREIGN KEY (product_id) REFERENCES product_new (product_id) MATCH FULL); 
+```
