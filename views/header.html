@@ -79,11 +79,10 @@
 							<div class="menu-dropdown menu-dropdown1">
 								<ul>
 									<li>HÃNG SẢN XUẤT</li>
-									{# 4 or 5 main manufactuer #} 
-									{% for each in manufacturer %}
-									<li><a href="hang-dien-thoai/{{each.manufacturer_name}}">{{each.manufacturer_name}}</a></li>
-									{% endfor %}
-									<li><a href="hang-dien-thoai/cac-hang-khac">Các hãng khác</a></li>
+									<li><a href="/hang-dien-thoai/apple">APPLE</a></li>
+									<li><a href="/hang-dien-thoai/samsung">SAMSUNG</a></li>
+									<li><a href="/hang-dien-thoai/oppo">OPPO</a></li>
+									<li><a href="/hang-dien-thoai/cac-hang-khac">Các hãng khác</a></li>
 								</ul>
 								<ul>
 									<li>GIÁ TIỀN</li>
@@ -100,11 +99,11 @@
 						<li class="mm-pk"><a href="/phu-kien">PHỤ KIỆN</a>
 							<div class="menu-dropdown menu-dropdown2">
 								<ul>
-								{% for each in accessory %}
-								<li><a href="/phu-kien/{{ each.product_id }}">{{ each.product_name }}</a></li>
-								{% endfor %}
+									{% for each in accessory %}
+									<li><a href="/phu-kien/{{ each.category_id}}">{{ each.category_name }}</a></li>
+									{% endfor %}
 									<li><a href="/phu-kien" class="pk-icon-1">Pin sạc</a></li>
-								
+
 								</ul>
 							</div>
 						</li>

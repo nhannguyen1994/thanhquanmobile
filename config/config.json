@@ -2,9 +2,9 @@
   "development": {
     "username": "postgres",
     "password": "abc",
-    "database": "dienthoai",
+    "database": "test_product",
     "host"    : "localhost",
-    "port"    : 5433,
+    "port"    : 5432,
     "dialect" : "postgres",
     "schema"  : "public",
     "logging" : false

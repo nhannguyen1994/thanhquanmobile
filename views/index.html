@@ -79,11 +79,10 @@
 
 			<div class="row">
 				<div class="owl-carousel">
-					{% for each in data.hotestProduct %}
+					{% for each in productHot %}
 					<div class="owl-carousel-slide">
 						<div class="product-box ph">
-							{#<img src="/images/{{each.image}}">#}
-							<img src="/images/p1.jpg">
+							<img src="/images/products/{{each.product_id}}/{{each.product_id}}_0.jpg">
 							<div class="name-price">
 								<p class="name-product">{{each.product_name}}</p>
 								<p class="price-product">{{each.price}} VNĐ</p>
@@ -134,11 +133,10 @@
 
 			<div class="row">
 				<div class="owl-carousel">
-					{% for each in data.newestProduct %}
+					{% for each in productNew %}
 					<div class="owl-carousel-slide">
 						<div class="product-box ph">
-							{#<img src="/images/{{each.image}}">#}
-							<img src="/images/p2.jpg">
+							<img src="/images/products/{{each.product_id}}/{{each.product_id}}_0.jpg">
 							<div class="name-price">
 								<p class="name-product">{{each.product_name}}</p>
 								<p class="price-product">{{each.price}} VNĐ</p>
@@ -189,22 +187,24 @@
 
 			<div class="row">
 				<div class="owl-carousel">
+					{% for each in accessoryHot %}
 					<div class="owl-carousel-slide">
 						<div class="product-box ph">
-							<img src="/images/pk1.jpg">
+							<img src="/images/products/{{each.product_id}}/{{each.product_id}}_0.jpg">
 							<div class="name-price">
-								<p class="name-product">Loa Bluetooth Awei Y200</p>
-								<p class="price-product">600.000 VNĐ</p>
+								<p class="name-product">{{each.product_name}}</p>
+								<p class="price-product">{{each.price}} VNĐ</p>
 								<div class="info-product info-ph">
 									<div>
-										<p>Loa Bluetooth Awei Y200</p>
-										<p>600.000 VNĐ</p>
+										<p>{{each.product_name}}</p>
+										<p>{{each.price}} VNĐ</p>
 										<span></span>
-										<p>Các nút ấn trên loa là dạng cảm ứng nhạy và dễ sử dụng.</p>
-										<p>Các nút ấn trên loa là dạng cảm ứng nhạy và dễ sử dụng.</p>
-										<p>Công nghệ bluetooth 3.0 giúp kết nối trong khoảng 10m.</p>
+										<!--<p>Màn hình: {{each.main_property['Kích thước màn hình']}}</p>
+										<p>HĐH: {{each.main_property['Hệ điều hành']}}</p>
+										<p>Camera: {{each.main_property['Máy ảnh chính']}}</p>
+										<p>PIN: {{each.main_property['Dung lượng pin (mAh)']}}</p>-->
 									</div>
-									<a href="chi-tiet.html" class="watch">Xem chi tiết</a>
+									<a href="/phu-kien/{{each.product_id}}" class="watch">Xem chi tiết</a>
 									<span class="buy">Mua hàng</span>
 									<span class="buy added">Đã thêm vào giỏ hàng</span>
 								</div>
@@ -214,106 +214,7 @@
 						</div>
 						<!-- end product-box -->
 					</div>
-					<div class="owl-carousel-slide">
-						<div class="product-box ph">
-							<img src="/images/pk2.jpg">
-							<div class="name-price">
-								<p class="name-product">Thẻ nhớ Micro SD 64 GB Class 10</p>
-								<p class="price-product">750.000 VNĐ</p>
-								<div class="info-product info-ph">
-									<div>
-										<p>Thẻ nhớ Micro SD 64 GB Class 10</p>
-										<p>750.000 VNĐ</p>
-										<span></span>
-										<p>Tốc độ đọc: 45 MB/s</p>
-										<p>Tốc độ ghi: 10 MB/s</p>
-										<p>Thoải mái lưu trữ cho điện thoại, máy tính bảng</p>
-									</div>
-									<a href="chi-tiet.html" class="watch">Xem chi tiết</a>
-									<span class="buy">Mua hàng</span>
-									<span class="buy added">Đã thêm vào giỏ hàng</span>
-								</div>
-								<!-- end info-box -->
-							</div>
-							<!-- end name-price -->
-						</div>
-						<!-- end product-box -->
-					</div>
-					<div class="owl-carousel-slide">
-						<div class="product-box ph">
-							<img src="/images/pk3.jpg">
-							<div class="name-price">
-								<p class="name-product">Dây cáp Micro USB 1 m Cliptec Titanium</p>
-								<p class="price-product">100.000 VNĐ</p>
-								<div class="info-product info-ph">
-									<div>
-										<p>Dây cáp Micro USB 1 m Cliptec Titanium</p>
-										<p>100.000 VNĐ</p>
-										<span></span>
-										<p>Chất lượng tương đương với hàng chính hãng</p>
-										<p>Dùng để truyền dữ liệu hay sạc pin</p>
-										<p>Dây dài 100 cm</p>
-									</div>
-									<a href="chi-tiet.html" class="watch">Xem chi tiết</a>
-									<span class="buy">Mua hàng</span>
-									<span class="buy added">Đã thêm vào giỏ hàng</span>
-								</div>
-								<!-- end info-box -->
-							</div>
-							<!-- end name-price -->
-						</div>
-						<!-- end product-box -->
-					</div>
-					<div class="owl-carousel-slide">
-						<div class="product-box ph">
-							<img src="/images/pk4.jpg">
-							<div class="name-price">
-								<p class="name-product">Tai nghe chụp tai</p>
-								<p class="price-product">600.000 VNĐ</p>
-								<div class="info-product info-ph">
-									<div>
-										<p>Tai nghe chụp tai</p>
-										<p>600.000 VNĐ</p>
-										<span></span>
-										<p>Lớp đệm tai êm và dày, giúp đeo tai thoải mái và hạn chế bị rách.</p>
-										<p>Có thể kéo dãn tai nghe 4 cm để vừa vặn hơn khi sử dụng.</p>
-										<p>Tương thích với hầu hết điện thoại hiện nay.</p>
-									</div>
-									<a href="chi-tiet.html" class="watch">Xem chi tiết</a>
-									<span class="buy">Mua hàng</span>
-									<span class="buy added">Đã thêm vào giỏ hàng</span>
-								</div>
-								<!-- end info-box -->
-							</div>
-							<!-- end name-price -->
-						</div>
-						<!-- end product-box -->
-					</div>
-					<div class="owl-carousel-slide">
-						<div class="product-box ph">
-							<img src="/images/pk7.jpg">
-							<div class="name-price">
-								<p class="name-product">Pin sạc dự phòng Safari 2 5.000mAh</p>
-								<p class="price-product">200.000 VNĐ</p>
-								<div class="info-product info-ph">
-									<div>
-										<p>Pin sạc dự phòng Safari 2 5.000mAh</p>
-										<p>200.000 VNĐ</p>
-										<span></span>
-										<p>Thiết kế bắt mắt với họa tiết caro.</p>
-										<p>Đèn LED báo mức pin khả dụng.</p>
-										<p>Chức năng lắc để hiển thị dung lượng pin.</p>
-									</div>
-									<a href="chi-tiet.html" class="watch">Xem chi tiết</a>
-									<span class="buy">Mua hàng</span>
-									<span class="buy added">Đã thêm vào giỏ hàng</span>
-								</div>
-								<!-- end info-box -->
-							</div>
-							<!-- end name-price -->
-						</div>
-						<!-- end product-box -->
-					</div>
+					{% endfor %}
 				</div>
 				<!-- end owl-carousel -->
 			</div>
