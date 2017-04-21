@@ -14,6 +14,28 @@ module.exports = function (express) {
     const router = express.Router();
 
     router.get('/', (req, res) => {
+
+        //Add to cart
+        let addtocart = req.query['add-to-cart'];
+        let addcart = '';
+	    if(typeof addtocart != 'undefined') {
+            let cart = req.session.cart;
+
+            if(!cart){
+                cart = req.session.cart = {};
+            }
+
+            if(cart && cart[addtocart]) {
+                let qty = cart[addtocart];
+                cart[addtocart] = qty + 1;
+            }else {
+                cart[addtocart] = 1;
+            }
+            //log(cart);
+            addcart = product.selectName(addtocart);
+        }
+
+
         let q = req.query.page;
         let n = 9;
         let pgfrom = 0;
@@ -27,74 +49,12 @@ module.exports = function (express) {
         let order = req.query.order;
         //
         db.task(t => {
-            if (price !== undefined) {
-                switch (price) {
-                    case 'den5':
-                        return t.batch([
-                            product.selectByPrice(0, 5000000, n, pgfrom),
-                            product.countAllByPrice(0, 5000000),
-                            q
-                        ])
-                        break;
-                    case '5den10':
-                        return t.batch([
-                            product.selectByPrice(5000000, 10000000, n, pgfrom),
-                            product.countAllByPrice(5000000, 10000000),
-                            q
-                        ])
-                        break;
-                    case '10den15':
-                        return t.batch([
-                            product.selectByPrice(10000000, 15000000, n, pgfrom),
-                            product.countAllByPrice(10000000, 15000000),
-                            q
-                        ])
-                        break;
-                    case 'tren15':
-                        return t.batch([
-                            product.selectByPrice(15000000, 50000000, n, pgfrom),
-                            product.countAllByPrice(15000000, 50000000),
-                            q
-                        ])
-                }
-            } else if (order !== undefined) {
-                switch (order) {
-                    case 'newest':
-                        return t.batch([
-                            product.selectByNewest(n, pgfrom),
-                            product.countAll(),
-                            q
-                        ])
-                        break;
-                    case 'hotest':
-                        return t.batch([
-                            product.selectBySales(n, pgfrom),
-                            product.countAll(),
-                            q
-                        ])
-                        break;
-                    case 'hightolow':
-                        return t.batch([
-                            product.selectByPriceDesc(n, pgfrom),
-                            product.countAll(),
-                            q
-                        ])
-                        break;
-                    case 'lowtohigh':
-                        return t.batch([
-                            product.selectByPriceAsc(n, pgfrom),
-                            product.countAll(),
-                            q
-                        ])
-                }
-            } else {
-                return t.batch([
-                    product.selectByPagination(n, pgfrom),
-                    product.countAll(),
-                    q
-                ]);
-            }
-
+            return t.batch([
+                product.selectByPagination(n, pgfrom),
+                product.countAll(),
+                q,
+                addcart
+            ]);
         })
             .then(data => {
                 let countAll = page = 0;

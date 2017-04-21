@@ -8,10 +8,10 @@ class Image extends Model{
         this.db = db;
     }
     all () {
-        return this.db.many("SELECT * FROM product_image");
+        return this.db.many("SELECT * FROM images");
     }
     selectByParentId (id) {
-        return this.db.many("SELECT * FROM product_image WHERE product_id = $1", id);
+        return this.db.many("SELECT * FROM images WHERE product_id = $1", id);
     }
 
 }

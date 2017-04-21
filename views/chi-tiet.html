@@ -1,10 +1,14 @@
-{% extends "index.html" %} {% block head %}
+{% extends "index.html" %}
+
+{% block head %}
 <link href="/css/danh-sach-style.css" rel="stylesheet">
 <link href="/css/chi-tiet-style.css" rel="stylesheet">
 <script type="text/javascript" src="/js/detail-js.js"></script>
 <script src="/owlcarousel/owl.carousel.min.js"></script>
 <script src="/owlcarousel/carousel.js"></script>
-{% endblock %} {% block content %}
+{% endblock %}
+
+{% block content %}
 <section class="container" id="list-page">
 	<div class="row mot-hang" style="margin-bottom:30px;">
 		<a href="/dien-thoai" class="big-title big-title-list-page">ĐIỆN THOẠI</a>
@@ -15,16 +19,54 @@
 	<!-- THANH TIÊU ĐỀ //////////////////////////////////////////////////////////////////////// -->
 
 	<div class="row">
+		<aside class="col-md-2 list-menu-box">
+			<ul>
+				<li class="menu-box"><a class="title-list" href="">HÃNG SẢN XUẤT</a>
+					<ul>
+						<li><a class="chi-tiet-active" href="">APPLE</a></li>
+						<li><a href="">SAMSUNG</a></li>
+						<li><a href="">SONY</a></li>
+						<li><a href="">OPPO</a></li>
+						<li><a href="">ASUS</a></li>
+						<li><a href="">LENOVO</a></li>
+						<li><a href="">Các hãng khác</a></li>
+					</ul>
+				</li>
+				<li class="menu-box"><a class="title-list" href="">GIÁ TIỀN</a>
+					<ul>
+						<li><a href="">Dưới 1 Triệu</a></li>
+						<li><a href="">Từ 1 đến 3 triệu</a></li>
+						<li><a href="">Từ 3 đến 5 triệu</a></li>
+						<li><a href="">Từ 3 đến 7 triệu</a></li>
+						<li><a href="">Từ 7 đến 10 triệu</a></li>
+						<li><a href="">Từ 10 đến 15 triệu</a></li>
+						<li><a href="">Trên 15 triệu</a></li>
+					</ul>
+				</li>
+				<li class="menu-box"><a class="title-list" href="">LOẠI ĐIỆN THOẠI</a>
+					<ul>
+						<li><a href="">IOS (iPhone) </a></li>
+						<li><a href="">Android</a></li>
+						<li><a href="">Hệ điều hành khác</a></li>
+						<li><a href="">Phổ thông</a></li>
+					</ul>
+				</li>
+			</ul>
+		</aside> <!-- end list-menu-box -->
 
-		<div class="col-md-6 produce-detail">
+		<div class="col-md-7 produce-detail">
+			<h2 class="name-product">{{detail.product_name}}</h2>
+		</div>
+
+		<div class="col-md-7 produce-detail">
 			<div class="image-product-box">
 
 				<div class="mau mau0">
 					{% for each in images %}
 					{% if loop.first %}
-						<img class="product-big-image showImageAfterOnclick" src="/images/products/{{detail.product_id}}/{{each.image_name}}"> 
+						<img class="product-big-image showImageAfterOnclick" src="/images/products/{{each.url_image}}">
 					{% else %}
-						<img class="product-sm-image ClickEvent" src="/images/products/{{detail.product_id}}/{{each.image_name}}"> 
+						<img class="product-sm-image ClickEvent" src="/images/products/{{each.url_image}}">
 					{% endif %}
 					{% endfor%}
 				</div>
@@ -32,8 +74,7 @@
 
 		</div>
 
-		<div class="col-md-6 col-xs-12 produce-detail-2">
-			<h2 class="name-product">{{detail.product_name}}</h2>
+		<div class="col-md-3 col-xs-12 produce-detail-2">
 			<h2 class="price-product"> {{detail.price}} VNĐ</h2>
 			<p class="code">Mã sản phẩm:<span>{{detail.product_id}}</span></p>
 			<ul class="promotion">
@@ -54,7 +95,7 @@
 
 		</div>
 
-		<div class="col-md-12 col-sm-12 col-sx-12 produce-detail detail-product-box">
+		<div class="col-md-7 col-sm-12 col-sx-12 produce-detail detail-product-box">
 			<h3>Thông số kỹ thuật </h3>
 			<ul class="cau-hinh-don-gian">
 				{% for mainProp, propValue in detail.main_property %}
@@ -96,7 +137,7 @@
 				{% for each in productSimilar %}
 				<div class="owl-carousel-slide">
 					<div class="product-box ph">
-						<img src="/images/products/{{each.product_id}}/{{each.product_id}}_0.jpg">
+						<img src="/images/products/{{each.product_id}}_0.jpg">
 						<div class="name-price">
 							<p class="name-product">{{each.product_name}}</p>
 							<p class="price-product">{{each.price}} VNĐ</p>

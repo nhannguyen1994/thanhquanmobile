@@ -10,7 +10,13 @@ module.exports = (app, express) => {
     app.use('/phu-kien', accessory);
 
     const productBrand = require('./product-brand')(express);
-    app.use('/hang-dien-thoai', productBrand)
+    app.use('/hang-dien-thoai', productBrand);
+
+    const giohang = require('./gio-hang')(express);
+    app.use('/gio-hang/', giohang);
+
+    const thanhcong = require('./thanh-cong')(express);
+    app.use('/thanh-cong/', thanhcong);
 
     app.get('/tin-tuc', (req, res) => {
         res.render('tin-tuc.html', { pageTitle: 'Tin Tức' });
@@ -26,9 +32,5 @@ module.exports = (app, express) => {
 
     app.get('/tai-khoan', (req, res) => {
         res.render('tai-khoan.html', { pageTitle: 'Tài Khoản' });
-    });
-
-    app.get('/gio-hang', (req, res) => {
-        res.render('gio-hang.html', { pageTitle: 'Giỏ Hàng' });
     });
 };

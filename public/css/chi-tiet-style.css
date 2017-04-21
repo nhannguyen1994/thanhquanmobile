@@ -96,7 +96,9 @@
 
 /*-------------------------------------------------*/
 
-
+.produce-detail h2.name-product{
+	text-align: left;
+}
 .produce-detail h2  , .produce-detail h3 , .produce-detail-2 h2 {
 	width: 100%;
 	text-align: center;
