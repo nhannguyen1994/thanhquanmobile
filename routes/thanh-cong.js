@@ -7,26 +7,23 @@ const product = new Product(db);
 
 let log = console.log;
 
+function getFormattedDate() {
+    var date = new Date();
+    var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 
-module.exports = function (express) {
+    return str;
+}
+
+module.exports = function (express, csrfProtection) {
 	const router = express.Router();
 
-	router.post('/', (req, res) => {
+	router.post('/', csrfProtection, (req, res) => {
 
 	    //log(req.body);
-
+        let idClient = req.cookies['cart'];
         let cart = req.session.cart;
         let ids = '';
         let count = 0;
-        if(req.body['capnhat']){
-            for (item in cart) {
-                if (req.body[item] > 0) {
-                    cart[item] = req.body[item];
-                } else {
-                    delete cart[item];
-                }
-            }
-        }
 
         for (item in cart) {
             count++;
@@ -37,18 +34,12 @@ module.exports = function (express) {
             }
         }
 
-
-
-
-
         //log(ids);
         let countCart = Object.keys(cart).length;
         if (countCart === 0) {
             window.location.replace("/gio-hang/");
             exit;
         }
-
-
 
         db.task(t => {
             return t.batch([
@@ -59,45 +50,56 @@ module.exports = function (express) {
             .then(data => {
                 let total = 0;
                 data[0].forEach((item) => {
-                    total = total + item.price;
+                    total = total + (item.price * data[1][item.product_id]);
                 });
+                //log(data[1])
                 if(req.body['thanhtoan']) {
                     if(req.body['name'] && req.body['phone'] && req.body['email'] && req.body['address'] && req.body['method']){
+                        let order_id = shortid.generate();
                         let val = {
+                            id: order_id,
+                            user_id: '1',
                             name: req.body['name'],
                             phone: req.body['phone'],
                             email: req.body['email'],
                             address: req.body['address'],
                             method: req.body['method'],
-                            user_id: 0,
                             note: req.body['note'],
                             status: 'pending',
                             order_date: getFormattedDate(),
-                            delivery_date: '',
+                            //delivery_date: 'NULLIF("0000-00-00 00:00:00", "0000-00-00 00:00:00")::timestamp',
+                            delivery_date: '0000-00-00 00:00:00',
                             total: total
                         };
-                        db.none('INSERT INTO orders VALUES(' + shortid.generate() + ', ${user_id}, ${name}, ${phone}, ${email}, ${address}, ${note}, ${order_date}, ${delivery_date}, ${status}, ${total})', val)
-                        .then((data) => {
+                        //log('INSERT INTO orders VALUES(' + val.id + ', ' + val.user_id + ', ' + val.name + ', ' + val.phone + ', ' + val.email + ', ' + val.address + ', ' + val.note + ', ' + val.status + ', ' + val.total + ', ' + val.method + ', ' + val.order_date + ', ' + val.delivery_date + ')');
+                        /*
+                        db.query("INSERT INTO orders (orders_id, user_id, name, phone, email, address, note, status, total, method, order_date, delivery_date)" +
+                            "VALUES($(id), ${user_id}, ${name}, ${phone}, ${email}, ${address}, ${note}, ${status}, ${total}, ${method}, ${order_date}, ${delivery_date})", val)
+                            */
+                        db.task(t => {
+                            let queries = lst.map(l => {
+                                return t.one("INSERT INTO orders (orders_id, user_id, name, phone, email, address, note, status, total, method, order_date, delivery_date)" +
+                            "VALUES($(id), ${user_id}, ${name}, ${phone}, ${email}, ${address}, ${note}, ${status}, ${total}, ${method}, ${order_date}, ${delivery_date})", val)
+                            });
+                            return t.batch(queries);
+                        })
+                            .then((data) => {
+                            log(data);
                             res.render('thanh-cong.html', {
                                 title: 'Đặt hàng thành công',
-                                product: data[0],
-                                cart: data[1]
+                                idClient: idClient
                             });
                         })
                         .catch(error => {
-                            res.render('gio-hang.html', {
-                                title: 'Giỏ hàng',
-                                product: data[0],
-                                cart: data[1]
+                            res.json({
+                                success: false,
+                                error: error.message || error
                             });
                         });
                     }
+                }else {
+                    window.location.replace("/gio-hang/");
                 }
-                res.render('gio-hang.html', {
-                    title: 'Giỏ hàng',
-                    product: data[0],
-                    cart: data[1]
-                });
             })
             .catch(error => {
                 res.json({

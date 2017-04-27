@@ -7,20 +7,14 @@ const product = new Product(db);
 
 let log = console.log;
 
-function getFormattedDate() {
-    var date = new Date();
-    var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-
-    return str;
-}
-
-module.exports = function (express) {
+module.exports = function (express, csrfProtection) {
 	const router = express.Router();
 
-	router.get('/', (req, res) => {
+	router.get('/', csrfProtection, (req, res) => {
 
 	    //Lấy giá trị session cart
         let cart = req.session.cart;
+        //log(cart);
         let ids = '';
         let count = 0;
 
@@ -43,45 +37,82 @@ module.exports = function (express) {
             res.render('gio-hang.html', {
                 title: 'Giỏ hàng',
                 product: '',
-                cart: ''
+                cart: '',
+                csrfToken: req.csrfToken()
             });
-        }
+        }else {
 
-        db.task(t => {
-            return t.batch([
-                product.cartIDs(ids),
-                cart
-            ]);
-        })
-            .then(data => {
-                //log(data);
-                res.render('gio-hang.html', {
-                    title: 'Giỏ hàng',
-                    product: data[0],
-                    cart: data[1]
-                });
+            db.task(t => {
+                return t.batch([
+                    product.cartIDs(ids),
+                    cart
+                ]);
             })
-            .catch(error => {
-                res.json({
-                    success: false,
-                    error: error.message || error
+                .then(data => {
+                    //log(data);
+                    res.render('gio-hang.html', {
+                        title: 'Giỏ hàng',
+                        product: data[0],
+                        cart: data[1],
+                        csrfToken: req.csrfToken()
+                    });
+                })
+                .catch(error => {
+                    res.json({
+                        success: false,
+                        error: error.message || error
+                    });
                 });
-            });
+        }
 	});
 
 	router.post('/', (req, res) => {
 
 	    //log(req.body);
-
+        let idClient = req.cookies['cart'];
         let cart = req.session.cart;
         let ids = '';
         let count = 0;
         if(req.body['capnhat']){
             for (item in cart) {
                 if (req.body[item] > 0) {
+
                     cart[item] = req.body[item];
+
+                    let qty = req.body[item];
+
+                    let cart_insert = {
+                        session_user_id: idClient,
+                        product_id: item,
+                        qty: qty
+                    };
+
+                    db.none('UPDATE carts SET qty=${qty} WHERE session_user_id=${session_user_id} AND product_id=${product_id}', cart_insert)
+                        .then(() => {
+                            console.log('Cart: Update Success');
+                        })
+                        .catch(error => {
+                            res.json({
+                                success: false,
+                                error: error.message || error
+                            });
+                        });
                 } else {
                     delete cart[item];
+                    let cart_insert = {
+                        session_user_id: idClient,
+                        product_id: item
+                    };
+                    db.none('DELETE FROM carts WHERE session_user_id=${session_user_id} AND product_id=${product_id}', cart_insert)
+                        .then(() => {
+                            console.log('Cart: Delete Success');
+                        })
+                        .catch(error => {
+                            res.json({
+                                success: false,
+                                error: error.message || error
+                            });
+                        });
                 }
             }
         }
@@ -101,7 +132,8 @@ module.exports = function (express) {
             res.render('gio-hang.html', {
                 title: 'Giỏ hàng',
                 product: '',
-                cart: ''
+                cart: '',
+                csrfToken: req.csrfToken()
             });
         }
 
@@ -115,7 +147,8 @@ module.exports = function (express) {
                 res.render('gio-hang.html', {
                     title: 'Giỏ hàng',
                     product: data[0],
-                    cart: data[1]
+                    cart: data[1],
+                    csrfToken: req.csrfToken()
                 });
             })
             .catch(error => {

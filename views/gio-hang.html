@@ -65,7 +65,7 @@
 	</div>
 
 	<div class="row">
-		<form action="" method="post">
+		<form action="/thanh-cong/" method="post">
 			<div class="col-md-7">
 				<div class="form-group d-name">
 					<label for="delivery-name">Họ và tên:</label>
@@ -136,6 +136,7 @@
 					<p>Tổng cộng:</p>
 					<p>{{ total }} VNĐ</p>
 				</div>
+				<input type="hidden" value="{{csrfToken}}" name="_csrf">
 				{% if cart %}
 				<input type="submit" name="thanhtoan" value="Thanh toán" class="btn btn-primary btn-lg btn-block">
 				{% endif %}

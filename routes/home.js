@@ -16,8 +16,9 @@ module.exports = function (express, cart) {
 
     const router = express.Router();
 
+
     router.get('/', (req, res, next) => {
-        log(accessory.selectHot(10));
+
         db.task(t => {
             return t.batch([
                 //cate.selectCurrentById('ptpk'),
